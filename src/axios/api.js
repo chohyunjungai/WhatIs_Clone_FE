@@ -1,6 +1,8 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 
+
+// 토큰
 const instance = axios.create({
   baseURL: process.env.REACT_APP_SERVER_URL,
 });
@@ -13,7 +15,7 @@ const jwtInstance = axios.create({
   },
 });
 
-
+//project 추가
 //project 추가
 const addProject = async (newProject)=> {
   await jwtInstance.put(/post/info/{postId},newProject)
