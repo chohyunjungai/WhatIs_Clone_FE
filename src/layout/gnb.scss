@@ -1,0 +1,97 @@
+.login-gnb {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+
+  .logo {
+    font-weight: 900;
+    font-size: 20px;
+  }
+
+  .content-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 500px;
+
+    .funding {
+      button {
+        font-weight: 700;
+        font-size: 20px;
+        color: #3e9453;
+      }
+    }
+
+    .search {
+      input {
+        padding: 4px 12px;
+        font-size: 20px;
+        border: 1px solid #3e9453;
+      }
+    }
+  }
+
+  .profile-box {
+    display: flex;
+    align-items: center;
+
+    .avatar {
+      width: 30px;
+      height: 30px;
+      background-color: rgb(216, 174, 137);
+      border-radius: 50%;
+      margin-right: 24px;
+    }
+
+    .action-wrapper {
+      button {
+        border: 1px solid #3e9453;
+        color: #3e9453;
+        padding: 8px 12px;
+      }
+    }
+  }
+}
+
+.logout-gnb {
+  border-bottom: 1px solid #dddddd;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
+
+  .logo {
+    font-weight: 900;
+    font-size: 20px;
+  }
+
+  .action-wrapper {
+    position: absolute;
+    right: 0;
+    display: flex;
+    margin-right: 50px;
+
+    li {
+      cursor: pointer;
+    }
+
+    li:not(:last-child) {
+      margin-right: 10px;
+    }
+  }
+}
+
+// .login-gnb .action-wrapper {}
+
+// selector - 선택자
+//
+
+// section {
+//   background-color: red;
+// }
+
+// #good {
+//   background-color: red;
+// }
