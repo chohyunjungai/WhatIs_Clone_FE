@@ -1,27 +1,24 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import "./index.css";
-import App from "./App";
-import reportWebVitals from "./reportWebVitals";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import DashboardPage from "./pages/dashBoardPage";
-import LoginPage from "./pages/loginPage";
-import SignUpPage from "./pages/signUpPage";
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import App from './App';
+import reportWebVitals from './reportWebVitals';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import FundingListsPage from './pages/FundingListsPage';
+import LoginPage from './pages/LoginPage';
+import SignUpPage from './pages/SignUpPage';
+import ProjectStory from './pages/ProjectStory';
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
+const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />}>
-          <Route
-            index
-            path=""
-            element={<DashboardPage></DashboardPage>}
-          ></Route>
-          <Route path="login" element={<LoginPage></LoginPage>}></Route>
-          <Route path="sign-up" element={<SignUpPage></SignUpPage>}></Route>
-          <Route path="sign-up" element={<SignUpPage></SignUpPage>}></Route>
+          <Route index path='' element={<FundingListsPage></FundingListsPage>}></Route>
+          <Route path='login' element={<LoginPage></LoginPage>}></Route>
+          <Route path='signup' element={<SignUpPage></SignUpPage>}></Route>
+          <Route path='projectstory' element={<ProjectStory></ProjectStory>}></Route>
         </Route>
       </Routes>
     </BrowserRouter>

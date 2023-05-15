@@ -4,12 +4,11 @@ import { allProject } from "../axios/posts";
 import Funding from "../components/Funding";
 import MenuCategory from "../components/MenuCategory";
 import axios from "axios";
-import "./FundingLists.scss";
+import "../components/FundingLists.scss";
 
 const FundingListsPage = () => {
-  const { isLoading, isError, data } = useQuery("allProject", allProject);
+  // const { isLoading, isError, data } = useQuery("allProject", allProject);
   const [fundingList, setFundingList] = useState([]);
-  console.log(data);
   // if (isLoading) return <div>Loading...</div>;
   // if (isError) return <div>Error: {Error.message}</div>;
 
