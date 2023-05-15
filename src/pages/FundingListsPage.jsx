@@ -11,7 +11,7 @@ import { mainListAPI } from "../Styles/config";
 
 export default function FundingListsPage({ history }) {
   const [menuIdx, setMenuIdx] = useState(-1);
-  const { isLoading, isError, data } = useQuery("allProject", allProject);
+  // const { isLoading, isError, data } = useQuery("allProject", allProject);
   const [fundingList, setFundingList] = useState([]);
 
   // if (isLoading) return <div>Loading...</div>;
