@@ -15,20 +15,23 @@ const jwtInstance = axios.create({
 });
 
 //project 추가
-const addProject = async (newProject) => {
-  await jwtInstance.put("/posts/{id}/info", newProject);
-};
+// const addProject = async (newProject) => {
+//   await jwtInstance.put(`/posts/${id}/info`, newProject);
+// };
 //project All 조회
 const allProject = async () => {
   try {
     const response = await instance.get(
-      `${process.env.REACT_APP_SERVER_URL}/posts?sort={sort}`
-    );
+      `${process.env.REACT_APP_SERVER_URL}/posts?page=0&size=10&sort=createdAt,DESC&category=All
 
+
+      `
+    );
+    console.log(response);
     return response.data;
   } catch (error) {
     throw new Error(error.message);
   }
 };
 
-export { addProject, allProject };
+export { allProject };

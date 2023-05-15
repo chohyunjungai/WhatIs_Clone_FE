@@ -1,6 +1,10 @@
-import React, { useState } from "react";
-import "./signUp.scss";
+import "../pages/SignUp.scss";
 import axios from "axios";
+// import kakoLogin from "../components/KaKaoLogin";
+import React, { useState } from "react";
+import "../pages/SignUp.scss";
+import { useNavigate } from "react-router-dom";
+// import { KAKAO_AUTH_URL } from "../api/loginKeys";
 
 const SignUpPage = () => {
   const [file, setFile] = useState();
