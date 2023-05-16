@@ -12,13 +12,8 @@
     "node-sass": "^8.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-query": "^3.39.3",
     "react-router-dom": "^6.11.1",
     "react-scripts": "5.0.1",
-    "sass": "^1.62.1",
-    "styled-components": "^6.0.0-rc.1",
-    "use-input": "^0.1.0",
-    "use-mutation": "^2.2.1",
     "web-vitals": "^2.1.0"
   },
   "scripts": {
@@ -44,9 +39,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "sass-loader": "^13.2.2",
-    "style-loader": "^3.3.2"
   }
 }
