@@ -3,34 +3,35 @@ import { useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { useEffect } from "react";
-// import { FaTshirt } from "react-icons/fa";
 
 const Main = () => {
-  const [itemList, setItemList] = useState([]);
-  const [categoryList, setCategoryList] = useState([]);
   const imageUrl =
     "https://cdn.shopify.com/s/files/1/2303/2711/files/2_e822dae0-14df-4cb8-b145-ea4dc0966b34.jpg?v=1617059123"; // 이미지 URL
 
+  const [itemList, setItemList] = useState([]);
+  const [category, setCategory] = useState([]);
+  console.log("카테고리 들어완요?", category);
+  const [sort, setSort] = useState("createdAt");
+
+  const selectSort = (_sort) => {
+    setSort(_sort);
+    console.log("안녕 데이터야:", _sort);
+  };
+
+  const selectCategory = (_category) => {
+    setCategory(_category);
+  };
   const getMainData = async () => {
     const response = await axios.get(
-      "http://43.201.181.250/posts?page=0&size=10&sort=createdAt,DESC"
+      `http://43.201.181.250/posts?page=0&size=10&sort=${sort},DESC&category=${category}`
     );
     console.log("main data get 요청:", response);
     setItemList(response.data.data);
   };
 
-  const getCategoryListData = async () => {
-    const response = await axios.get(
-      "http://43.201.181.250/posts?page=0&size=10&sort=createdAt,DESC&category=HomeLiving"
-    );
-    console.log("카테고리 데이터 요청:", response);
-    setCategoryList(response.data.data);
-  };
-
   useEffect(() => {
     getMainData();
-    getCategoryListData();
-  }, []); // add empty array here
+  }, [category, sort]); // add empty array here
   // const categoryList = [
   //   {
   //     img: "imgUrl",
@@ -70,15 +71,62 @@ const Main = () => {
   //     likes: 50,
   //   },
   // ];
+
+  const categoryArrary = [
+    {
+      name: "All",
+      key: "All",
+    },
+    {
+      name: "Beauty",
+      key: "Beauty",
+    },
+    {
+      name: "HomeLiving",
+      key: "HomeLiving",
+    },
+    {
+      name: "FashionStuff",
+      key: "FashionStuff",
+    },
+    {
+      name: "TechElectrics",
+      key: "TechElectrics",
+    },
+    {
+      name: "Food",
+      key: "Food",
+    },
+    {
+      name: "LeisureSports",
+      key: "LeisureSports",
+    },
+  ];
+
+  const selectArray = [
+    {
+      name: "최신순",
+      key: "createdAt",
+    },
+    {
+      name: "모집금액순",
+      key: "totalAmount",
+    },
+    {
+      name: "인기순",
+      key: "likes",
+    },
+    {
+      name: "모집마감순",
+      key: "deadLine",
+    },
+  ];
+
   return (
     <>
       <div>
-        {/* 헤더 */}
-        <header />
-
         {/* 배너 */}
         <Container_BannerImage>
-          big image box
           <img
             src={imageUrl}
             alt="이미지"
@@ -88,13 +136,12 @@ const Main = () => {
 
         {/* 카테고리 */}
         <Container_CategoryLists>
-          {categoryList.map((item) => {
+          {categoryArrary.map((item) => {
             return (
               <div>
-                <div>
-                  <imag src={item.img} />
-                </div>
-                <p>{item.title}</p>
+                <button onClick={() => selectCategory(item.key)}>
+                  {item.name}
+                </button>
               </div>
             );
           })}
@@ -104,12 +151,15 @@ const Main = () => {
         <Container_ProjectCards>
           <div>
             {/* 데이터 헤더 */}
-            <p>전체</p>
-            <div>
-              <button>인기순</button>
-              <button>모집금액순</button>
-              <button>최신순</button>
-            </div>
+            {selectArray.map((item) => {
+              return (
+                <div>
+                  <button onClick={() => selectSort(item.key)}>
+                    {item.name}
+                  </button>
+                </div>
+              );
+            })}
           </div>
 
           {/* 데이터뿌리기  */}
@@ -147,7 +197,6 @@ const Container_ProjectCards = styled.div`
 `;
 
 const Container_BannerImage = styled.div`
-  border: 1px solid black;
   height: 250px;
   width: auto;
 `;
