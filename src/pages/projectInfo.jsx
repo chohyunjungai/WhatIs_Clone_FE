@@ -22,6 +22,8 @@ const ProjectInfo = () => {
   const [price, setPrice] = useState();
   const [deadLine, setDeadLine] = useState();
 
+
+
   //Project 추가
   const addProject = async (id, newProject) => {
     await jwtInstance.post(`/posts/${id}/info`, newProject);

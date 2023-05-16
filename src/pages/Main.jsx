@@ -4,6 +4,7 @@ import styled from "styled-components";
 import axios from "axios";
 import { useEffect } from "react";
 
+
 const Main = () => {
   const imageUrl =
     "https://cdn.shopify.com/s/files/1/2303/2711/files/2_e822dae0-14df-4cb8-b145-ea4dc0966b34.jpg?v=1617059123"; // 이미지 URL
@@ -24,14 +25,30 @@ const Main = () => {
   const getMainData = async () => {
     const response = await axios.get(
       `http://43.201.181.250/posts?page=0&size=10&sort=${sort},DESC&category=${category}`
+
     );
     console.log("main data get 요청:", response);
     setItemList(response.data.data);
   };
 
+
   useEffect(() => {
     getMainData();
   }, [category, sort]); // add empty array here
+
+  const getCategoryListData = async () => {
+    const response = await axios.get(
+      "http://43.201.181.250/posts?page=0&size=10&sort=createdAt,DESC&category=HomeLiving"
+    );
+    console.log("카테고리 데이터 요청:", response);
+    setCategoryList(response.data.data);
+  };
+
+  useEffect(() => {
+    getMainData();
+    getCategoryListData();
+  }, []); // add empty array here
+
   // const categoryList = [
   //   {
   //     img: "imgUrl",
@@ -71,6 +88,7 @@ const Main = () => {
   //     likes: 50,
   //   },
   // ];
+
 
   const categoryArrary = [
     {
@@ -122,6 +140,7 @@ const Main = () => {
     },
   ];
 
+
   return (
     <>
       <div>
@@ -151,6 +170,7 @@ const Main = () => {
         <Container_ProjectCards>
           <div>
             {/* 데이터 헤더 */}
+
             {selectArray.map((item) => {
               return (
                 <div>
@@ -160,6 +180,7 @@ const Main = () => {
                 </div>
               );
             })}
+
           </div>
 
           {/* 데이터뿌리기  */}

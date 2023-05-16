@@ -40,7 +40,7 @@ const SignUpPage = () => {
 
   const sendVerifyCode = () => {
     axios
-      .post("https://localhost:3000/members/auth", {
+      .post("https://43.201.181.250/members/auth", {
         email: "test@gmail.com",
       })
       .then((res) => {
