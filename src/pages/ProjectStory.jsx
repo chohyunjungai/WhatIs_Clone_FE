@@ -11,7 +11,8 @@ const ProjectStory = () => {
         const fileUploadRes = await axios.put(res.body.signedUrl, file)
       }
   return (
-    <div>
+    <div>왜 안나오니? 
+      
        <input type="file" onChange={(e) => {
           console.log('e.target.files[0]: ', e.target.files[0]);
           setFile(e.target.files[0])
