@@ -5,34 +5,33 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { useParams } from "react-router-dom";
 
 // access 토큰
-const access_token = Cookies.get("Access_Token");
-const refresh_token = Cookies.get("Refresh_Token");
-
-const jwtInstance = axios.create({
-  baseURL: process.env.REACT_APP_SERVER_URL,
-  headers: {
-    Access_Token: `Bearer ${access_token}`,
-    Refresh_Token: `Bearer ${refresh_token}`,
-  },
-});
+// const access_token = Cookies.get("Access_Token");
+// const refresh_token = Cookies.get("Refresh_Token");
 
 // const jwtInstance = axios.create({
 //   baseURL: process.env.REACT_APP_SERVER_URL,
+//   headers: {
+//     Access_Token: `Bearer ${access_token}`,
+//     Refresh_Token: `Bearer ${refresh_token}`,
+//   },
 // });
 
-// jwtInstance.interceptors.request.use(function (config) {
-//   const access_token = Cookies.get("Access_Token");
-//   const refresh_token = Cookies.get("Refresh_Token");
+const jwtInstance = axios.create({
+  baseURL: process.env.REACT_APP_SERVER_URL,
+});
 
-//   config.headers["Access_Token"] = `Bearer ${access_token}`;
-//   config.headers["Refresh_Token"] = `Bearer ${refresh_token}`;
+jwtInstance.interceptors.request.use(function (config) {
+  const access_token = Cookies.get("Access_Token");
+  const refresh_token = Cookies.get("Refresh_Token");
 
-//   return config;
-// });
+  config.headers["Access_Token"] = `Bearer ${access_token}`;
+  config.headers["Refresh_Token"] = `Bearer ${refresh_token}`;
+
+  return config;
+});
 
 const StAllProjectInfoPage = styled.div`
   display: flex;
@@ -63,13 +62,7 @@ const StSideMenuBarButtons = styled.button`
 `;
 
 const ProjectInfo = () => {
-  const location = useLocation();
-  const id = location.state.id;
-
-  useEffect(() => {
-    console.log("id:", id);
-  }, [id]);
-
+  const { id } = useParams();
   const [title, setTitle] = useState("");
   const [targetAmount, setTargetAmount] = useState("");
   const [price, setPrice] = useState("");
@@ -115,12 +108,24 @@ const ProjectInfo = () => {
   const onClickSaveProject = async (event) => {
     event.preventDefault();
     const formData = new FormData();
-    formData.append("postInfo[title]", title);
-    formData.append("postInfo[targetAmount]", targetAmount);
-    formData.append("postInfo[price]", price);
-    formData.append("postInfo[deadLine]", deadLine);
-    formData.append("postInfo[searchTag]", tags); // assuming tags is a string
+
+    const projectData = {
+      title: title,
+      targetAmount: targetAmount,
+      price: price,
+      deadLine: deadLine,
+      searchTag: [],
+    };
+
+    // formData.append("postInfo", JSON.stringify(projectData));
     formData.append("thumbnail", selectedFile); // assuming selectedFile is your file input
+
+    formData.append(
+      "postInfo",
+      new Blob([JSON.stringify(projectData)], {
+        type: "application/json",
+      })
+    );
 
     try {
       await jwtInstance.put(`/posts/${id}/info`, formData, {
@@ -130,7 +135,10 @@ const ProjectInfo = () => {
       });
       // Success! Project added.
       // Navigate to '/main' route with formData as state
-      navigate("/main");
+      // console.log("Access:", Access_Token);
+      navigate("/main", {
+        state: { formData: projectData, thumbnail: selectedFile },
+      });
     } catch (error) {
       console.error(error);
     }
@@ -138,6 +146,7 @@ const ProjectInfo = () => {
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
+    console.log("이미지들어와?:", file);
     setSelectedFile(file);
   };
 
@@ -163,9 +172,8 @@ const ProjectInfo = () => {
       <StContainerProjectInfo>
         <h1>프로젝트 정보</h1>
         <div>
-          <h3>카테고리</h3>
           {/* 카테고리 셀렉터 */}
-          <select
+          {/* <select
             style={{ width: "300px", border: "1px solid black" }}
             value={selectedCategory}
             onChange={(event) => setSelectedCategory(event.target.value)}
@@ -173,11 +181,7 @@ const ProjectInfo = () => {
             <option value="Beauty">뷰티</option>
             <option value="TechElectrics">테크</option>
             <option value="HomeLiving">홈리빙</option>
-            <option value="All">전체</option>
-            <option value="LeisureSports">레저 스포츠</option>
-            <option value="FashionStuff">패션</option>
-            <option value="Food">푸드</option>
-          </select>
+          </select> */}
           <h3>목표금액</h3>
           <input
             value={targetAmount}

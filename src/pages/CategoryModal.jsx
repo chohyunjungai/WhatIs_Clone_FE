@@ -4,6 +4,7 @@ import styled from "styled-components";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useEffect } from "react";
+
 const ModalBackground = styled.div`
   position: fixed;
   top: 0;
@@ -39,10 +40,11 @@ const CategoryButton = styled.button`
 const CategoryModal = ({ onClose }) => {
   const navigate = useNavigate();
   const categories = [
+    "All",
     "Beauty",
     "FashionStuff",
+    "HomeLiving",
     "Food",
-    "Art",
     "TechElectrics",
     "LeisureSports",
   ]; // Add more categories as needed
@@ -59,13 +61,22 @@ const CategoryModal = ({ onClose }) => {
   });
 
   const handleCategoryClick = async (category) => {
+    if (!access_token || !refresh_token) {
+      // Check if access token or refresh token is missing
+      alert("토큰이 없습니다. 로그인이 필요합니다."); // Alert the user
+      navigate("/logintest");
+      onClose(); // Redirect to the login page
+      return; // Stop further execution of the function
+    }
+
     try {
       const response = await jwtInstance.post("http://43.201.181.250/posts", {
         category: category,
       });
       const id = response.data.data;
-      console.log("postId 요청:", response.data.data);
-      navigate(`/posts/${category.toLowerCase()}/info`, { data: { id } });
+      console.log("postId 요청:", id);
+
+      navigate(`/posts/${id}/info`);
       onClose();
     } catch (error) {
       console.log(error);
@@ -73,9 +84,7 @@ const CategoryModal = ({ onClose }) => {
   };
   // };navigate(`/posts/${category.toLowerCase()}/info`);
 
-  useEffect(() => {
-    handleCategoryClick();
-  }, []);
+  useEffect(() => {}, []);
   return (
     <ModalBackground>
       <ModalContainer>

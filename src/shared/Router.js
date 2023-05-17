@@ -16,6 +16,7 @@ const Router = () => {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <GlobalLayoutHeader />
+
         <Routes>
           <Route path="/main" element={<Main />} />
           <Route path="/signup" element={<SignUpPage />} />

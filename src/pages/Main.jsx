@@ -11,6 +11,7 @@ const Main = () => {
 
   const location = useLocation();
   // const formData = location.state.formData;
+  const formData = location.state && location.state.formData;
 
   const [itemList, setItemList] = useState([]);
   const [category, setCategory] = useState([]);
@@ -24,6 +25,7 @@ const Main = () => {
 
   const selectCategory = (_category) => {
     setCategory(_category);
+    setSort("createdAt");
   };
   const getMainData = async () => {
     try {
@@ -41,17 +43,17 @@ const Main = () => {
     getMainData();
   }, [category, sort]); // add empty array here
 
-  const getCategoryListData = async () => {
-    try {
-      const response = await axios.get(
-        "http://43.201.181.250/posts?page=0&size=10&sort=createdAt,DESC&category=HomeLiving"
-      );
-      console.log("카테고리 데이터 요청:", response);
-      // setCategory(response.data.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const getCategoryListData = async () => {
+  //   try {
+  //     const response = await axios.get(
+  //       "http://43.201.181.250/posts?page=0&size=10&sort=createdAt,DESC&category=HomeLiving"
+  //     );
+  //     console.log("카테고리 데이터 요청:", response);
+  //     // setCategory(response.data.data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   useEffect(() => {
     getMainData();
@@ -174,8 +176,8 @@ const Main = () => {
         </Container_CategoryLists>
 
         {/* 데이터 */}
-        <Container_ProjectCards>
-          <div>
+        <div>
+          <StSelectArray>
             {/* 데이터 헤더 */}
 
             {selectArray.map((item) => {
@@ -187,15 +189,15 @@ const Main = () => {
                 </div>
               );
             })}
-          </div>
+          </StSelectArray>
 
           {/* 데이터뿌리기  */}
-          <div>
+          <Container_ProjectCards>
             {/* 카드 */}
             {itemList.map((item) => {
               return (
-                <div key={item.id}>
-                  <img src={item.thumbnail} />
+                <ProjectCard key={item.id}>
+                  <CardImage src={item.thumbnail} />
                   {/* 좋아요하트 */}
                   <div>{item.likeStatus ? "채워진하트" : "빈하트"}</div>
                   달성 모집금액 데드라인
@@ -205,11 +207,11 @@ const Main = () => {
                     <p>{item.deadLine}일 전</p>
                   </div>
                   <p>{item.title}</p>
-                </div>
+                </ProjectCard>
               );
             })}
-          </div>
-        </Container_ProjectCards>
+          </Container_ProjectCards>
+        </div>
       </div>
       ;
     </>
@@ -220,7 +222,10 @@ export default Main;
 
 const Container_ProjectCards = styled.div`
   margin: 20px;
-  border: 1px solid black;
+  /* border: 1px solid black; */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
 `;
 
 const Container_BannerImage = styled.div`
@@ -230,7 +235,28 @@ const Container_BannerImage = styled.div`
 
 const Container_CategoryLists = styled.div`
   margin-top: 80px;
-  border: 1px solid black;
+  /* border: 1px solid black; */
   display: flex;
   justify-content: center;
+`;
+
+const ProjectCard = styled.div`
+  /* width: calc(33.33% - 20px);  */
+
+  margin: 10px;
+  padding: 10px;
+  /* border: 1px solid black; */
+  flex-grow: 1; /* Allow cards to grow and shrink to fit the container */
+`;
+
+const CardImage = styled.img`
+  width: 400px; /* Set the desired width */
+  height: 200px; /* Set the desired height */
+  object-fit: cover; /* Maintain aspect ratio and cover the container */
+`;
+
+const StSelectArray = styled.div`
+  display: flex;
+  justify-content: right;
+  margin: 10px;
 `;
