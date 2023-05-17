@@ -1,44 +1,146 @@
 import React from "react";
 import styled from "styled-components";
-// import { useState } from "react";
-import useInput from "../components/Hooks/useInput";
+// import useInput from "../components/Hooks/useInput";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
 
-// jwt토큰
-const jwt = Cookies.get("jwt");
+// access 토큰
+const access_token = Cookies.get("Access_Token");
+const refresh_token = Cookies.get("Refresh_Token");
+
 const jwtInstance = axios.create({
   baseURL: process.env.REACT_APP_SERVER_URL,
   headers: {
-    Authorization: `Bearer ${jwt}`,
+    Access_Token: `Bearer ${access_token}`,
+    Refresh_Token: `Bearer ${refresh_token}`,
   },
 });
 
+// const jwtInstance = axios.create({
+//   baseURL: process.env.REACT_APP_SERVER_URL,
+// });
+
+// jwtInstance.interceptors.request.use(function (config) {
+//   const access_token = Cookies.get("Access_Token");
+//   const refresh_token = Cookies.get("Refresh_Token");
+
+//   config.headers["Access_Token"] = `Bearer ${access_token}`;
+//   config.headers["Refresh_Token"] = `Bearer ${refresh_token}`;
+
+//   return config;
+// });
+
+const StAllProjectInfoPage = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+const StSideMenuBar = styled.div`
+  background-color: #d6d6d6;
+  width: 12%;
+  height: 100vh;
+  margin-right: 50px;
+`;
+const StContainerProjectInfo = styled.div`
+  width: 88%;
+  height: 100%;
+`;
+
+const StSideMenuBarButtonContainer = styled.div`
+  background-color: white;
+  height: 100vh;
+`;
+
+const StSideMenuBarButtons = styled.button`
+  border: 1px solid black;
+  border-radius: 7px;
+  font-size: 16px;
+  margin: 13px;
+`;
+
 const ProjectInfo = () => {
-  const [title, onChangeTitleHandler] = useState("");
-  const [targetAmount, onChangeTargetAmountHandler] = useState();
-  const [price, setPrice] = useState();
-  const [deadLine, setDeadLine] = useState();
+  const location = useLocation();
+  const id = location.state.id;
 
+  useEffect(() => {
+    console.log("id:", id);
+  }, [id]);
 
+  const [title, setTitle] = useState("");
+  const [targetAmount, setTargetAmount] = useState("");
+  const [price, setPrice] = useState("");
+  const [deadLine, setDeadLine] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [tags, setTags] = useState("");
 
-  //Project 추가
-  const addProject = async (id, newProject) => {
-    await jwtInstance.post(`/posts/${id}/info`, newProject);
-  };
   const navigate = useNavigate();
 
-  const newProject = {
-    title,
-    targetAmount,
+  const onChangeTitleHandler = (event) => {
+    setTitle(event.target.value);
+    console.log("타이틀이모야:", event.target.value);
   };
 
-  const onClickSaveProject = (event) => {
-    event.preventDefault();
-    // mutation.mutate(newProject);
+  const onChangeTargetAmountHandler = (event) => {
+    setTargetAmount(event.target.value);
+    console.log("타겟 어마운트 :", event.target.value);
   };
+
+  const onChangePriceHandler = (event) => {
+    setPrice(event.target.value);
+  };
+
+  const onChangeDeadlineHandler = (event) => {
+    setDeadLine(event.target.value);
+  };
+
+  const onChangeTagsHandler = (event) => {
+    setTags(event.target.value);
+  };
+
+  //Project 추가
+  // const addProject = async (id, newProject) => {
+  //   await jwtInstance.post(`/posts/${id}/info`, newProject);
+  // };
+
+  // const newProject = {
+  //   title,
+  //   targetAmount,
+  // };
+
+  const onClickSaveProject = async (event) => {
+    event.preventDefault();
+    const formData = new FormData();
+    formData.append("postInfo[title]", title);
+    formData.append("postInfo[targetAmount]", targetAmount);
+    formData.append("postInfo[price]", price);
+    formData.append("postInfo[deadLine]", deadLine);
+    formData.append("postInfo[searchTag]", tags); // assuming tags is a string
+    formData.append("thumbnail", selectedFile); // assuming selectedFile is your file input
+
+    try {
+      await jwtInstance.put(`/posts/${id}/info`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      // Success! Project added.
+      // Navigate to '/main' route with formData as state
+      navigate("/main");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    setSelectedFile(file);
+  };
+
   return (
     <StAllProjectInfoPage>
       {/* new header */}
@@ -63,23 +165,32 @@ const ProjectInfo = () => {
         <div>
           <h3>카테고리</h3>
           {/* 카테고리 셀렉터 */}
-          <select style={{ width: "300px", border: "1px solid black" }}>
-            <option value="option1">뷰티</option>
-            <option value="option2">테크</option>
-            <option value="option3">홈리빙</option>
-            <option value="option3">푸드</option>
+          <select
+            style={{ width: "300px", border: "1px solid black" }}
+            value={selectedCategory}
+            onChange={(event) => setSelectedCategory(event.target.value)}
+          >
+            <option value="Beauty">뷰티</option>
+            <option value="TechElectrics">테크</option>
+            <option value="HomeLiving">홈리빙</option>
+            <option value="All">전체</option>
+            <option value="LeisureSports">레저 스포츠</option>
+            <option value="FashionStuff">패션</option>
+            <option value="Food">푸드</option>
           </select>
           <h3>목표금액</h3>
           <input
             value={targetAmount}
-            placeholder="목표금액을 입력해"
+            placeholder="목표금액을 "
             onChange={onChangeTargetAmountHandler}
             style={{ width: "300px", border: "1px solid black" }}
           ></input>
 
           <h3>펀딩금액</h3>
           <input
+            value={price}
             placeholder="펀딩금액을 입력"
+            onChange={onChangePriceHandler}
             style={{ width: "300px", border: "1px solid black" }}
           ></input>
           <h3>프로젝트 제목</h3>
@@ -93,7 +204,7 @@ const ProjectInfo = () => {
         <div>
           {/* 이미지업로드 */}
           <h3>대표이미지</h3>
-          <button>업로드</button>
+          <input type="file" onChange={handleFileChange} />
         </div>
         <div>
           {/*프로젝트 deadline */}
@@ -105,11 +216,16 @@ const ProjectInfo = () => {
           <input
             placeholder="예시)2023-05-27"
             style={{ width: "300px", border: "1px solid black" }}
+            onChange={onChangeDeadlineHandler}
           />
         </div>
         <div>
           <h3>검색용태크(#)</h3>
-          <input style={{ width: "300px", border: "1px solid black" }} />
+          <input
+            value={tags}
+            onChange={onChangeTagsHandler}
+            style={{ width: "300px", border: "1px solid black" }}
+          />
         </div>
         <button
           size="200"
@@ -124,31 +240,3 @@ const ProjectInfo = () => {
 };
 
 export default ProjectInfo;
-
-const StAllProjectInfoPage = styled.div`
-  display: flex;
-  justify-content: center;
-`;
-
-const StSideMenuBar = styled.div`
-  background-color: #d6d6d6;
-  width: 15%;
-  height: 100vh;
-  margin-right: 50px;
-`;
-const StContainerProjectInfo = styled.div`
-  width: 85%;
-  height: 100%;
-`;
-
-const StSideMenuBarButtonContainer = styled.div`
-  background-color: white;
-  height: 100vh;
-`;
-
-const StSideMenuBarButtons = styled.button`
-  border: 1px solid black;
-  border-radius: 7px;
-  font-size: 20px;
-  margin: 8px;
-`;

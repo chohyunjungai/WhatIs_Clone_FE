@@ -44,7 +44,7 @@ const LoginTest = () => {
 
       const accessTokenExpirationTime = new Date(userAccessToken.exp * 1000);
 
-      Cookies.set("access_Token", access_token, {
+      Cookies.set("Access_Token", access_token, {
         expires: accessTokenExpirationTime,
       });
 
@@ -58,7 +58,7 @@ const LoginTest = () => {
       //   },
       // );
 
-      Cookies.set("refresh_token", refresh_token);
+      Cookies.set("Refresh_Token", refresh_token);
 
       // 메인페이지로 이동
       navigate("/main");

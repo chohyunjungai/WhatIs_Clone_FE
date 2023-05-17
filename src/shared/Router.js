@@ -20,7 +20,7 @@ const Router = () => {
           <Route path="/main" element={<Main />} />
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/projectInfo" element={<ProjectInfo />} />
+          <Route path="posts/:id/info" element={<ProjectInfo />} />
           <Route path="/detail" element={<Detail />} />
           <Route path="/projectStory" element={<ProjectStory />} />
           {/* Login Test를 위한 페이지 */}

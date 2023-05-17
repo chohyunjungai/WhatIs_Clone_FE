@@ -2,14 +2,20 @@ import React, { useState } from "react";
 // import "./gnb.scss";
 import "../components/GlobalLayoutHeader.scss";
 import { useNavigate } from "react-router-dom";
+import CategoryModal from "../pages/CategoryModal";
 
 const GlobalLayoutHeader = () => {
   const [isLogin, setIsLogin] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
   const onClickProjectMakingHandler = () => {
-    navigate("/projectInfo");
+    setIsModalOpen(true);
   };
+
+  // const onClickProjectMakingHandler = () => {
+  //   navigate("/projectInfo");
+  // };
 
   // const someList = [1, 2, 3, 4, 5]
   // const filteredList = someList.filter((ele) => {
@@ -38,6 +44,7 @@ const GlobalLayoutHeader = () => {
           <button onClick={onClickProjectMakingHandler}>프로젝트 만들기</button>
         </div>
       </div>
+      {isModalOpen && <CategoryModal onClose={() => setIsModalOpen(false)} />}
     </section>
   ) : (
     <section className="logout-gnb">
