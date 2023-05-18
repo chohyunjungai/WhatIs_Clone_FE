@@ -10,7 +10,11 @@ const GlobalLayoutHeader = () => {
   const navigate = useNavigate();
 
   const onClickProjectMakingHandler = () => {
-    setIsModalOpen(true);
+    if (isLogin) {
+      setIsModalOpen(true);
+    } else {
+      navigate("/login"); // 로그인 페이지로 이동하도록 설정 (경로는 적절히 수정)
+    }
   };
 
   const handleLogoClick = () => {
@@ -58,8 +62,8 @@ const GlobalLayoutHeader = () => {
         Wadiz
       </div>
       <ul className="action-wrapper">
-        <li>로그인</li>
-        <li>회원가입</li>
+        <li onClick={() => navigate("/logintest")}>로그인</li>
+        <li onClick={() => navigate("/signup")}>회원가입</li>
       </ul>
     </section>
   );
