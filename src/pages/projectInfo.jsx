@@ -1,34 +1,21 @@
 import React from "react";
 import styled from "styled-components";
-// import useInput from "../components/Hooks/useInput";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import axios from "axios";
-import Cookies from "js-cookie";
 import { useParams } from "react-router-dom";
-
-// access 토큰
-// const access_token = Cookies.get("Access_Token");
-// const refresh_token = Cookies.get("Refresh_Token");
-
-// const jwtInstance = axios.create({
-//   baseURL: process.env.REACT_APP_SERVER_URL,
-//   headers: {
-//     Access_Token: `Bearer ${access_token}`,
-//     Refresh_Token: `Bearer ${refresh_token}`,
-//   },
-// });
+import Cookies from "js-cookie";
+import axios from "axios";
 
 const jwtInstance = axios.create({
   baseURL: process.env.REACT_APP_SERVER_URL,
 });
 
 jwtInstance.interceptors.request.use(function (config) {
-  const access_token = Cookies.get("Access_Token");
-  const refresh_token = Cookies.get("Refresh_Token");
+  const access_token = Cookies.get("access_token");
+  const refresh_token = Cookies.get("refresh_token");
 
-  config.headers["Access_Token"] = `Bearer ${access_token}`;
-  config.headers["Refresh_Token"] = `Bearer ${refresh_token}`;
+  config.headers["access_token"] = `Bearer ${access_token}`;
+  config.headers["refresh_token"] = `Bearer ${refresh_token}`;
 
   return config;
 });
@@ -72,6 +59,10 @@ const ProjectInfo = () => {
   const [tags, setTags] = useState("");
 
   const navigate = useNavigate();
+
+  // //axios로 데이터 요청한거 받아오는 부분
+  // const { isLoading, isError, data } = useQuery("addProject", addProject);
+  // console.log(data);
 
   const onChangeTitleHandler = (event) => {
     setTitle(event.target.value);
@@ -136,7 +127,7 @@ const ProjectInfo = () => {
       // Success! Project added.
       // Navigate to '/main' route with formData as state
       // console.log("Access:", Access_Token);
-      navigate("/main", {
+      navigate(`/posts/${id}/story`, {
         state: { formData: projectData, thumbnail: selectedFile },
       });
     } catch (error) {

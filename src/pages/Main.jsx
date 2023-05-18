@@ -4,12 +4,44 @@ import styled from "styled-components";
 import axios from "axios";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+// import IsLike from "../components/IsLike";
+// import beanHeart from "../Styles/image/beanHeart.png";
+// import heart from "../Styles/image/heart.png";
+
+const jwtInstance = axios.create({
+  baseURL: process.env.REACT_APP_SERVER_URL,
+});
+
+jwtInstance.interceptors.request.use(function (config) {
+  const access_token = Cookies.get("access_token");
+  const refresh_token = Cookies.get("refresh_token");
+
+  config.headers["access_token"] = `Bearer ${access_token}`;
+  config.headers["refresh_token"] = `Bearer ${refresh_token}`;
+
+  return config;
+});
 
 const Main = () => {
   const imageUrl =
     "https://cdn.shopify.com/s/files/1/2303/2711/files/2_e822dae0-14df-4cb8-b145-ea4dc0966b34.jpg?v=1617059123"; // 이미지 URL
 
   const location = useLocation();
+  const navigate = useNavigate();
+
+  //카드 클릭 핸들러
+  const handleCardClick = async (id) => {
+    try {
+      const response = await jwtInstance.get(`/posts/${id}`);
+      console.log(response.data);
+
+      navigate(`/posts/${id}`); // Redirect to the Detail page with the projectId as a parameter
+    } catch (error) {
+      console.error("Failed to fetch post detail:", error);
+    }
+  };
   // const formData = location.state.formData;
   const formData = location.state && location.state.formData;
 
@@ -39,9 +71,9 @@ const Main = () => {
     }
   };
 
-  useEffect(() => {
-    getMainData();
-  }, [category, sort]); // add empty array here
+  // useEffect(() => {
+  //   getMainData();
+  // }, [category, sort]); // add empty array here
 
   // const getCategoryListData = async () => {
   //   try {
@@ -57,7 +89,6 @@ const Main = () => {
 
   useEffect(() => {
     getMainData();
-    // getCategoryListData();
   }, []); // add empty array here
 
   // const categoryList = [
@@ -196,11 +227,27 @@ const Main = () => {
             {/* 카드 */}
             {itemList.map((item) => {
               return (
-                <ProjectCard key={item.id}>
+                <ProjectCard
+                  key={item.id}
+                  onClick={() => handleCardClick(item.id)}
+                >
                   <CardImage src={item.thumbnail} />
                   {/* 좋아요하트 */}
-                  <div>{item.likeStatus ? "채워진하트" : "빈하트"}</div>
-                  달성 모집금액 데드라인
+                  {/* {liked ? (
+                    <StFullHeart
+                      src={heart}
+                      alt="Filled Heart"
+                      onClick={isLikeHandler}
+                    />
+                  ) : (
+                    <StEmptyHeart
+                      src={beanHeart}
+                      alt="Empty Heart"
+                      onClick={isLikeHandler}
+                    />
+                  )}
+                  <p>{likes}</p> */}
+                  {/* 달성 모집금액 데드라인 */}
                   <div>
                     <p>{item.percentage}% 달성</p>
                     <p>{item.targetAmount}원</p>
@@ -260,3 +307,34 @@ const StSelectArray = styled.div`
   justify-content: right;
   margin: 10px;
 `;
+
+// const StEmptyHeart = styled.img`
+//   background-image: url(${beanHeart});
+//   width: 35px;
+//   height: 35px;
+//   background-size: cover;
+//   background-color: transparent;
+//   border: none;
+//   cursor: pointer;
+//   &:hover {
+//     transform: scale(1.1);
+//   }
+//   margin-left: 20px;
+// `;
+// const StFullHeart = styled.img`
+//   background-image: url(${heart});
+//   width: 35px;
+//   height: 35px;
+//   background-size: cover;
+//   background-color: transparent;
+//   border: none;
+//   cursor: pointer;
+//   margin-left: 20px;
+//   &:hover {
+//     transform: scale(1.1);
+//   }
+// `;
+// const Like = styled.div`
+//   display: flex;
+//   align-items: center;
+// `;

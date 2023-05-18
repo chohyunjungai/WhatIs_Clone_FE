@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { useEffect } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { useEffect } from "react";
 
 const ModalBackground = styled.div`
   position: fixed;
@@ -48,20 +48,21 @@ const CategoryModal = ({ onClose }) => {
     "TechElectrics",
     "LeisureSports",
   ]; // Add more categories as needed
+
   // access 토큰
-  const access_token = Cookies.get("Access_Token");
-  const refresh_token = Cookies.get("Refresh_Token");
+  const access_token = Cookies.get("access_token");
+  const refresh_token = Cookies.get("refresh_token");
 
   const jwtInstance = axios.create({
     baseURL: process.env.REACT_APP_SERVER_URL,
     headers: {
-      Access_Token: `Bearer ${access_token}`,
-      Refresh_Token: `Bearer ${refresh_token}`,
+      access_token: `Bearer ${access_token}`,
+      refresh_token: `Bearer ${refresh_token}`,
     },
   });
 
   const handleCategoryClick = async (category) => {
-    if (!access_token || !refresh_token) {
+    if (!access_token) {
       // Check if access token or refresh token is missing
       alert("토큰이 없습니다. 로그인이 필요합니다."); // Alert the user
       navigate("/logintest");
@@ -79,7 +80,16 @@ const CategoryModal = ({ onClose }) => {
       navigate(`/posts/${id}/info`);
       onClose();
     } catch (error) {
-      console.log(error);
+      if (error.response) {
+        console.log("Error Response: ", error.response.data);
+        console.log("Error Status: ", error.response.status);
+        console.log("Error Headers: ", error.response.headers);
+      } else if (error.request) {
+        console.log("Error Request: ", error.request);
+      } else {
+        console.log("Error", error.message);
+      }
+      console.log("Error Config: ", error.config);
     }
   };
   // };navigate(`/posts/${category.toLowerCase()}/info`);

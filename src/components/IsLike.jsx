@@ -1,52 +1,97 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
-import { QueryClient, useMutation, useQueryClient } from "react-query";
-import * as CSS from "../components/component/style";
+// import React, { useState } from "react";
+// import { useEffect } from "react";
+// import { useMutation, useQueryClient } from "react-query";
+// import styled from "styled-components";
+// import Cookies from "js-cookie";
+// import axios from "axios";
 
-// access 토큰
-const access_token = Cookies.get("Access_Token");
-const refresh_token = Cookies.get("Refresh_Token");
+// import beanHeart from "../Styles/image/beanHeart.png";
+// import heart from "../Styles/image/heart.png";
 
-const jwtInstance = axios.create({
-  baseURL: process.env.REACT_APP_SERVER_URL,
-  headers: {
-    Access_Token: `Bearer ${access_token}`,
-    Refresh_Token: `Bearer ${refresh_token}`,
-  },
-});
+// // access token
+// const access_token = Cookies.get("Access_Token");
+// const refresh_token = Cookies.get("Refresh_Token");
 
-const IsLike = (props) => {
-  //project 좋아요
-  const isLikProject = async (props) => {
-    await jwtInstance.post(`/likes/${id}`);
-  };
+// const jwtInstance = axios.create({
+//   baseURL: process.env.REACT_APP_SERVER_URL,
+//   headers: {
+//     Access_Token: `Bearer ${access_token}`,
+//     Refresh_Token: `Bearer ${refresh_token}`,
+//   },
+// });
 
-  //리액트 쿼리 관련
-  const queryClient = useQueryClient();
-  const [Liked, setLiked] = useState(props.data.likes);
-  const mutation = useMutation(isLikProject, {
-    onSuccess: () => {
-      queryClient.invalidateQueries("allProject");
-      queryClient.invalidateQueries("detailProject");
-    },
-  });
-  useEffect(() => {
-    setLiked(props.data.isLiked);
-  }, [props.data]);
-  const isLikeHandler = () => {
-    setLiked(!Liked);
-    mutation.mutate(props.data.postId);
-  };
+// const IsLike = (props) => {
+//   const [likes, setLikes] = useState(props.data.likes); // keep track of like count
+//   const [liked, setLiked] = useState(props.data.likeStatus);
+//   const queryClient = useQueryClient();
 
-  return (
-    <>
-      {Liked ? (
-        <CSS.Heart onClick={isLikeHandler} />
-      ) : (
-        <CSS.BeanHeart onClick={isLikeHandler} />
-      )}
-    </>
-  );
-};
+//   const isLikeProject = async () => {
+//     await jwtInstance.post(`/likes/${props.data.postId}`);
+//   };
 
-export default IsLike;
+//   const mutation = useMutation(isLikeProject, {
+//     onSuccess: () => {
+//       queryClient.invalidateQueries("allProject");
+//     },
+//   });
+
+//   const isLikeHandler = () => {
+//     setLiked(!liked);
+//     // Increase or decrease the like count based on whether the post is being liked or unliked
+//     setLikeCount(liked ? likes - 1 : likes + 1);
+//     mutation.mutate();
+//   };
+
+//   return (
+//     <>
+//       {liked ? (
+//         <StFullHeart src={heart} alt="Filled Heart" onClick={isLikeHandler} />
+//       ) : (
+//         <StEmptyHeart
+//           src={beanHeart}
+//           alt="Empty Heart"
+//           onClick={isLikeHandler}
+//         />
+//       )}
+//       <p>{likes}</p> {/* Display the like count */}
+//     </>
+//   );
+// };
+
+// const StEmptyHeart = styled.img`
+//   background-image: url(${beanHeart});
+//   width: 35px;
+//   height: 35px;
+//   background-size: cover;
+//   background-color: transparent;
+//   border: none;
+//   cursor: pointer;
+//   &:hover {
+//     transform: scale(1.1);
+//   }
+//   margin-left: 20px;
+// `;
+// const StFullHeart = styled.img`
+//   background-image: url(${heart});
+//   width: 35px;
+//   height: 35px;
+//   background-size: cover;
+//   background-color: transparent;
+//   border: none;
+//   cursor: pointer;
+//   margin-left: 20px;
+//   &:hover {
+//     transform: scale(1.1);
+//   }
+// `;
+// const Like = styled.div`
+//   display: flex;
+//   align-items: center;
+// `;
+// const DetailLike = styled.div`
+//   display: flex;
+//   justify-content: space-between;
+//   width: 150px;
+// `;
+
+// export default IsLike;

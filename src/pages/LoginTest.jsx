@@ -9,8 +9,8 @@ import { useNavigate } from "react-router-dom";
 // {
 //   email: "string",
 //   password: "string"
-// user111@naver.com
-// User111!!
+// user222@naver.con
+// User222!!
 // }
 // js-cookie
 
@@ -40,11 +40,11 @@ const LoginTest = () => {
       const refresh_token = refresh_tokenOrigin.replace("Bearer ", "");
 
       const userAccessToken = jwtDecode(access_token);
-      const userRefreshToken = jwtDecode(refresh_token);
+      // const userRefreshToken = jwtDecode(refresh_token);
 
       const accessTokenExpirationTime = new Date(userAccessToken.exp * 1000);
 
-      Cookies.set("Access_Token", access_token, {
+      Cookies.set("access_token", access_token, {
         expires: accessTokenExpirationTime,
       });
 
@@ -58,7 +58,7 @@ const LoginTest = () => {
       //   },
       // );
 
-      Cookies.set("Refresh_Token", refresh_token);
+      Cookies.set("refresh_token", refresh_token);
 
       // 메인페이지로 이동
       navigate("/main");

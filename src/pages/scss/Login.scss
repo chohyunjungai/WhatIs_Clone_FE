@@ -1,0 +1,47 @@
+.login {
+  display: flex;
+  justify-content: center;
+
+  .form-wrapper {
+    padding-top: 100px;
+    width: 400px;
+
+    .form-title {
+      font-size: 30px;
+      font-weight: 500;
+      margin-bottom: 20px;
+    }
+    .input-box {
+      width: 100%;
+      height: 50px;
+      padding: 5px;
+    }
+
+    .action-wrapper {
+      button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 50px;
+        background-color: #00c4c4;
+        color: #ffffff;
+        font-size: 16px;
+        font-weight: 500;
+      }
+    }
+    .kakao-wrapper {
+      button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 50px;
+        background-color: #fcd604;
+        color: #060606;
+        font-size: 16px;
+        font-weight: 500;
+      }
+    }
+  }
+}

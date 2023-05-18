@@ -1,8 +1,7 @@
-import "../pages/SignUp.scss";
+import "../pages/scss/SignUp.scss";
 import axios from "axios";
 // import kakoLogin from "../components/KaKaoLogin";
 import React, { useState } from "react";
-import "../pages/SignUp.scss";
 import { useNavigate } from "react-router-dom";
 // import { KAKAO_AUTH_URL } from "../api/loginKeys";
 
@@ -29,13 +28,6 @@ const SignUpPage = () => {
     // const newObj = { ...someObj, b: 3 }
 
     console.log("signUpForm: ", signUpForm);
-    // axios.post('https://localhost:3000/members/signup', signUpForm)
-    //   .then((response) => {
-    //     console.log(response);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
   };
 
   const sendVerifyCode = () => {
