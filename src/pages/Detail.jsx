@@ -26,7 +26,7 @@ const Detail = () => {
 
   const getDetailData = async () => {
     try {
-      const response = await axios.get(`/posts/${id}`);
+      const response = await axios.get(`http://43.201.181.250/posts/${id}`);
       console.log("상세 get 요청 결과:", response);
       setDetailFunding(response.data.data);
     } catch (error) {
