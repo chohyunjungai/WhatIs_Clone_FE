@@ -34,6 +34,36 @@ const Main = () => {
       console.error("Failed to fetch post detail:", error);
     }
   };
+  // const formData = location.state.formData;
+  const formData = location.state && location.state.formData;
+  const [itemList, setItemList] = useState([]);
+  const [category, setCategory] = useState("All");
+  const [searchValue, setSearchValue] = useState("");
+  console.log("카테고리 들어완요?", category);
+  const [sort, setSort] = useState("createdAt");
+  const selectSort = (_sort) => {
+    setSort(_sort);
+    console.log("안녕 데이터야:", _sort);
+  };
+  const selectCategory = (_category) => {
+    if (_category === "All") {
+      setCategory(_category);
+    } else {
+      setCategory(_category);
+      setSort("createdAt");
+    }
+  };
+  const getMainData = async () => {
+    try {
+      const response = await axios.get(
+        `http://43.201.181.250/posts?page=0&size=10&sort=${sort},DESC&category=${category}`
+      );
+      console.log("main data get 요청:", response);
+      setItemList(response.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const handleSearch = async () => {
     try {
       const response = await axios.get(
@@ -47,87 +77,12 @@ const Main = () => {
       console.error(error);
     }
   };
-  // const formData = location.state.formData;
-  const formData = location.state && location.state.formData;
-  const [itemList, setItemList] = useState([]);
-  const [category, setCategory] = useState("All");
-  const [searchValue, setSearchValue] = useState("");
-  console.log("카테고리 들어완요?", category);
-  const [sort, setSort] = useState("createdAt");
-  const selectSort = (_sort) => {
-    setSort(_sort);
-    console.log("안녕 데이터야:", _sort);
-  };
-  const selectCategory = (_category) => {
-    setCategory(_category);
-    setSort("createdAt");
-  };
-  const getMainData = async () => {
-    try {
-      const response = await axios.get(
-        `http://43.201.181.250/posts?page=0&size=10&sort=${sort},DESC&category=${category}`
-      );
-      console.log("main data get 요청:", response);
-      setItemList(response.data.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
   useEffect(() => {
     getMainData();
   }, [category, sort]); // add empty array here
-  // const getCategoryListData = async () => {
-  //   try {
-  //     const response = await axios.get(
-  //       "http://43.201.181.250/posts?page=0&size=10&sort=createdAt,DESC&category=HomeLiving"
-  //     );
-  //     console.log("카테고리 데이터 요청:", response);
-  //     // setCategory(response.data.data);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
   useEffect(() => {
     getMainData();
   }, []); // add empty array here
-  // const categoryList = [
-  //   {
-  //     img: "imgUrl",
-  //     title: "전체",
-  //   },
-  //   {
-  //     img: "imgUrl",
-  //     title: "패션",
-  //   },
-  // ];
-  // const itemList = [
-  //   {
-  //     id: 1,
-  //     title: "<역대급 함유량>ㅁㄴㅇㄹㅇㄴㅁㄹㅁㅇㄴㄹ",
-  //     thumbnail: "이미지 url",
-  //     price: 5000,
-  //     totalAmount: 70000,
-  //     targetAmount: 1500000,
-  //     deadLine: new Date(),
-  //     percentage: 5.5,
-  //     name: "화장품",
-  //     likeStatus: true,
-  //     likes: 50,
-  //   },
-  //   {
-  //     id: 2,
-  //     title: "<역대급 함유량>ㅁㄴㅇㄹㅇㄴㅁㄹㅁㅇㄴㄹ",
-  //     thumbnail: "이미지 url",
-  //     price: 5000,
-  //     totalAmount: 70000,
-  //     targetAmount: 1500000,
-  //     deadLine: new Date(),
-  //     percentage: 5.5,
-  //     name: "화장품",
-  //     likeStatus: true,
-  //     likes: 50,
-  //   },
-  // ];
   const categoryArrary = [
     {
       name: "All",
@@ -168,10 +123,6 @@ const Main = () => {
       key: "totalAmount",
     },
     {
-      name: "인기순",
-      key: "likes",
-    },
-    {
       name: "모집마감순",
       key: "deadLine",
     },
@@ -206,8 +157,15 @@ const Main = () => {
               type="text"
               value={searchValue}
               onChange={(e) => setSearchValue(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleSearch();
+                }
+              }}
             />
-            <button onClick={handleSearch}>Search</button>
+            <button type="submit" onClick={handleSearch}>
+              검색
+            </button>
           </div>
         </Container_SearchBar>
         {/* 데이터 */}
@@ -262,7 +220,6 @@ const Main = () => {
           </Container_ProjectCards>
         </div>
       </div>
-      ;
     </>
   );
 };
@@ -308,33 +265,3 @@ const StSelectArray = styled.div`
   justify-content: right;
   margin: 10px;
 `;
-// const StEmptyHeart = styled.img`
-//   background-image: url(${beanHeart});
-//   width: 35px;
-//   height: 35px;
-//   background-size: cover;
-//   background-color: transparent;
-//   border: none;
-//   cursor: pointer;
-//   &:hover {
-//     transform: scale(1.1);
-//   }
-//   margin-left: 20px;
-// `;
-// const StFullHeart = styled.img`
-//   background-image: url(${heart});
-//   width: 35px;
-//   height: 35px;
-//   background-size: cover;
-//   background-color: transparent;
-//   border: none;
-//   cursor: pointer;
-//   margin-left: 20px;
-//   &:hover {
-//     transform: scale(1.1);
-//   }
-// `;
-// const Like = styled.div`
-//   display: flex;
-//   align-items: center;
-// `;

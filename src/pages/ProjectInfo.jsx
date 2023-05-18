@@ -5,11 +5,12 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import Cookies from "js-cookie";
 import axios from "axios";
+import "../Styles/image/Dribbble_Shot.png";
 const jwtInstance = axios.create({
   baseURL: process.env.REACT_APP_SERVER_URL,
 });
 jwtInstance.interceptors.request.use(function (config) {
-  const access_token = Cookies.get("access_token");
+  const access_token = Cookies.get("access_Token");
   const refresh_token = Cookies.get("refresh_token");
   config.headers["access_token"] = `Bearer ${access_token}`;
   config.headers["refresh_token"] = `Bearer ${refresh_token}`;
@@ -49,6 +50,10 @@ const ProjectInfo = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [tags, setTags] = useState("");
   const navigate = useNavigate();
+
+  const imageUrl =
+    "https://uploads-ssl.webflow.com/5a9ee6416e90d20001b20038/635aa51723268f507750ac1c_horizontal%20(38).svg";
+
   // //axios로 데이터 요청한거 받아오는 부분
   // const { isLoading, isError, data } = useQuery("addProject", addProject);
   // console.log(data);
@@ -123,6 +128,12 @@ const ProjectInfo = () => {
       <StSideMenuBar>
         {/* 사이드 메뉴바 */}
         <div>
+          <img
+            src={imageUrl}
+            alt="이미지"
+            style={{ width: "100%", height: "120%", objectFit: "cover" }}
+          />
+
           <button>프로젝트</button>
           <button>작성중</button>
           <h2>whatIs의</h2>
