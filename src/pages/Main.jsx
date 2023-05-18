@@ -27,9 +27,9 @@ const Main = () => {
   //카드 클릭 핸들러
   const handleCardClick = async (id) => {
     try {
-      const response = await jwtInstance.get(`/posts/${id}`);
+      const response = await axios.get(`http://43.201.181.250/posts/${id}`);
       console.log(response.data);
-      navigate(`/posts/${id}`); // Redirect to the Detail page with the projectId as a parameter
+      navigate(`/posts/${id}`, { state: response.data.data }); // Redirect to the Detail page with the projectId as a parameter
     } catch (error) {
       console.error("Failed to fetch post detail:", error);
     }

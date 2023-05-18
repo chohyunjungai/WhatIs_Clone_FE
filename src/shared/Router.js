@@ -3,7 +3,6 @@ import { useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Main from "../pages/Main";
 import SignUpPage from "../pages/SignUpPage";
-import LoginPage from "../pages/LoginPage";
 import ProjectInfo from "../pages/ProjectInfo";
 import Detail from "../pages/Detail";
 import ProjectStory from "../pages/ProjectStory";
@@ -40,7 +39,6 @@ const Router = () => {
         <Routes>
           <Route path="/main" element={<Main />} />
           <Route path="/signup" element={<SignUpPage />} />
-
           <Route path="/posts/:id/info" element={<ProjectInfo />} />
           <Route path="/posts/:id" element={<Detail />} />
           <Route path="/posts/:id/story" element={<ProjectStory />} />

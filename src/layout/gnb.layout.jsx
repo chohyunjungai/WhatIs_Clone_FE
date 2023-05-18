@@ -3,11 +3,15 @@
 // import { useNavigate } from "react-router-dom";
 
 // const GnbLayout = () => {
-//   const [isLogin, setIsLogin] = useState(true);
+//   const [isLogin, setIsLogin] = useState(false);
 //   const navigate = useNavigate();
 
 //   const onClickProjectMakingHandler = () => {
-//     navigate("/projectInfo");
+//     navigate("/posts/:id/info");
+//   };
+
+//   const loginHandler = () => {
+//     setIsLogin(!isLogin);
 //   };
 
 //   // const someList = [1, 2, 3, 4, 5]

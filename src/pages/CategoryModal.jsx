@@ -56,7 +56,7 @@ const CategoryModal = ({ onClose }) => {
   ]; // Add more categories as needed
 
   // access 토큰
-  const access_token = Cookies.get("access_token");
+  const access_token = Cookies.get("access_Token");
   const refresh_token = Cookies.get("refresh_token");
 
   const jwtInstance = axios.create({

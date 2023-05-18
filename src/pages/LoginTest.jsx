@@ -4,13 +4,13 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import jwtDecode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
-
+import "../pages/scss/Login.scss";
 // /members/login
 // {
 //   email: "string",
 //   password: "string"
-// user222@naver.con
-// User222!!
+// user111@naver.com
+// User111!!
 // }
 // js-cookie
 
@@ -40,11 +40,11 @@ const LoginTest = () => {
       const refresh_token = refresh_tokenOrigin.replace("Bearer ", "");
 
       const userAccessToken = jwtDecode(access_token);
-      // const userRefreshToken = jwtDecode(refresh_token);
+      const userRefreshToken = jwtDecode(refresh_token);
 
       const accessTokenExpirationTime = new Date(userAccessToken.exp * 1000);
 
-      Cookies.set("access_token", access_token, {
+      Cookies.set("access_Token", access_token, {
         expires: accessTokenExpirationTime,
       });
 
@@ -82,23 +82,51 @@ const LoginTest = () => {
     loginUser(user);
   };
 
+  // const SocialKakao=()=>{
+  //   const Rest_api_key='REST API KEY'
+  //   const redirecti_uri= 'http://43.201.181.250/kakao/callback'
+  //   const kakaoURL=`https://kauth.kakao.com/oauth/authorize?client_id=7fe3a140583f0df4191f29f81742062c&redirect_uri=http://43.201.181.250/members/kakao/callback&response_type=code`
+  //   const handleLogin =()=>{
+  //     window.location.href = kakaoURL
+  //   }
+  //  const code = new URL(window.location.href).searchParams.get("code");
   return (
-    <div>
-      <form onSubmit={submitHandler}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={emailInput}
-          onChange={emailInputHandler}
-        />
-        <input
-          type="password"
-          placeholder="password"
-          value={passwordInput}
-          onChange={passwordInputHandler}
-        />
-        <button style={{ border: "1px black solid" }}>로그인</button>
-      </form>
+    <div className="login">
+      <div className="form-wrapper">
+        <div className="form-title">로그인</div>
+        <form onSubmit={submitHandler}>
+          <div>
+            <input
+              className="input-box"
+              type="email"
+              placeholder="이메일 입력"
+              value={emailInput}
+              onChange={emailInputHandler}
+            />
+            <br />
+            <br />
+
+            <input
+              className="input-box"
+              type="password"
+              placeholder="비밀번호 입력"
+              value={passwordInput}
+              onChange={passwordInputHandler}
+            />
+          </div>
+          <br />
+          <br />
+          <div className="action-wrapper">
+            <button>로그인</button>
+            <br />
+          </div>
+        </form>
+
+        <div className="kakao-wrapper">
+          {/* <button onClick= {handleLogin}>카카오로 시작하기</button> */}
+          <button>카카오로 시작하기</button>
+        </div>
+      </div>
     </div>
   );
 };

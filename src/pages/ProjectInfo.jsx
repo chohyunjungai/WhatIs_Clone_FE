@@ -5,26 +5,20 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import Cookies from "js-cookie";
 import axios from "axios";
-
 const jwtInstance = axios.create({
   baseURL: process.env.REACT_APP_SERVER_URL,
 });
-
 jwtInstance.interceptors.request.use(function (config) {
   const access_token = Cookies.get("access_token");
   const refresh_token = Cookies.get("refresh_token");
-
   config.headers["access_token"] = `Bearer ${access_token}`;
   config.headers["refresh_token"] = `Bearer ${refresh_token}`;
-
   return config;
 });
-
 const StAllProjectInfoPage = styled.div`
   display: flex;
   justify-content: center;
 `;
-
 const StSideMenuBar = styled.div`
   background-color: #d6d6d6;
   width: 12%;
@@ -35,19 +29,16 @@ const StContainerProjectInfo = styled.div`
   width: 88%;
   height: 100%;
 `;
-
 const StSideMenuBarButtonContainer = styled.div`
   background-color: white;
   height: 100vh;
 `;
-
 const StSideMenuBarButtons = styled.button`
   border: 1px solid black;
   border-radius: 7px;
   font-size: 16px;
   margin: 13px;
 `;
-
 const ProjectInfo = () => {
   const { id } = useParams();
   const [title, setTitle] = useState("");
@@ -57,67 +48,54 @@ const ProjectInfo = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedFile, setSelectedFile] = useState(null);
   const [tags, setTags] = useState("");
-
   const navigate = useNavigate();
-
   // //axios로 데이터 요청한거 받아오는 부분
   // const { isLoading, isError, data } = useQuery("addProject", addProject);
   // console.log(data);
-
   const onChangeTitleHandler = (event) => {
     setTitle(event.target.value);
     console.log("타이틀이모야:", event.target.value);
   };
-
   const onChangeTargetAmountHandler = (event) => {
     setTargetAmount(event.target.value);
     console.log("타겟 어마운트 :", event.target.value);
   };
-
   const onChangePriceHandler = (event) => {
     setPrice(event.target.value);
   };
-
   const onChangeDeadlineHandler = (event) => {
     setDeadLine(event.target.value);
   };
-
   const onChangeTagsHandler = (event) => {
     setTags(event.target.value);
   };
-
   //Project 추가
   // const addProject = async (id, newProject) => {
   //   await jwtInstance.post(`/posts/${id}/info`, newProject);
   // };
-
   // const newProject = {
   //   title,
   //   targetAmount,
   // };
-
   const onClickSaveProject = async (event) => {
     event.preventDefault();
     const formData = new FormData();
-
+    const tagsArray = tags.split(" ").map((tag) => tag.trim()); // Split tags by spaces and remove leading/trailing whitespaces
     const projectData = {
       title: title,
       targetAmount: targetAmount,
       price: price,
       deadLine: deadLine,
-      searchTag: [],
+      searchTag: tagsArray,
     };
-
     // formData.append("postInfo", JSON.stringify(projectData));
     formData.append("thumbnail", selectedFile); // assuming selectedFile is your file input
-
     formData.append(
       "postInfo",
       new Blob([JSON.stringify(projectData)], {
         type: "application/json",
       })
     );
-
     try {
       await jwtInstance.put(`/posts/${id}/info`, formData, {
         headers: {
@@ -134,13 +112,11 @@ const ProjectInfo = () => {
       console.error(error);
     }
   };
-
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     console.log("이미지들어와?:", file);
     setSelectedFile(file);
   };
-
   return (
     <StAllProjectInfoPage>
       {/* new header */}
@@ -180,7 +156,6 @@ const ProjectInfo = () => {
             onChange={onChangeTargetAmountHandler}
             style={{ width: "300px", border: "1px solid black" }}
           ></input>
-
           <h3>펀딩금액</h3>
           <input
             value={price}
@@ -233,5 +208,4 @@ const ProjectInfo = () => {
     </StAllProjectInfoPage>
   );
 };
-
 export default ProjectInfo;
