@@ -28,23 +28,23 @@ const LoginTest = () => {
   const loginUser = async (user) => {
     try {
       const response = await api.post("/members/login", user);
-      console.log(response.headers.access_token);
+      console.log(response.headers.access_Token);
       console.log(response.headers.refresh_token);
 
       // 토큰을 받아와야 됌
       const {
-        access_token: access_tokenOrigin,
+        access_Token: access_tokenOrigin,
         refresh_token: refresh_tokenOrigin,
       } = response.headers;
-      const access_token = access_tokenOrigin.replace("Bearer ", "");
+      const access_Token = access_tokenOrigin.replace("Bearer ", "");
       const refresh_token = refresh_tokenOrigin.replace("Bearer ", "");
 
-      const userAccessToken = jwtDecode(access_token);
+      const userAccessToken = jwtDecode(access_Token);
       const userRefreshToken = jwtDecode(refresh_token);
 
       const accessTokenExpirationTime = new Date(userAccessToken.exp * 1000);
 
-      Cookies.set("access_Token", access_token, {
+      Cookies.set("access_Token", access_Token, {
         expires: accessTokenExpirationTime,
       });
 
