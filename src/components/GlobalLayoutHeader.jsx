@@ -13,6 +13,10 @@ const GlobalLayoutHeader = () => {
     setIsModalOpen(true);
   };
 
+  const handleLogoClick = () => {
+    // Handle logo click action here
+    console.log("Logo clicked");
+  };
   // const onClickProjectMakingHandler = () => {
   //   navigate("/projectInfo");
   // };
@@ -29,7 +33,9 @@ const GlobalLayoutHeader = () => {
 
   return isLogin ? (
     <section className="login-gnb">
-      <div className="logo">Wadiz</div>
+      <div onClick={handleLogoClick}>
+        <div className="logo">Wadiz</div>
+      </div>
       <div className="content-box">
         <div className="funding">
           <button>펀딩+</button>
@@ -48,7 +54,9 @@ const GlobalLayoutHeader = () => {
     </section>
   ) : (
     <section className="logout-gnb">
-      <div className="logo">Wadiz</div>
+      <div className="logo" onClick={handleLogoClick}>
+        Wadiz
+      </div>
       <ul className="action-wrapper">
         <li>로그인</li>
         <li>회원가입</li>

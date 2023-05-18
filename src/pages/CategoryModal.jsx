@@ -5,6 +5,12 @@ import { useEffect } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 
+const StXButton = styled.button`
+  margin-left: 440px;
+  cursor: pointer;
+  font-size: 18px;
+`;
+
 const ModalBackground = styled.div`
   position: fixed;
   top: 0;
@@ -94,19 +100,28 @@ const CategoryModal = ({ onClose }) => {
   };
   // };navigate(`/posts/${category.toLowerCase()}/info`);
 
+  const onClickModalClose = () => {
+    onClose();
+  };
+
   useEffect(() => {}, []);
   return (
     <ModalBackground>
       <ModalContainer>
-        <h2>Select a Category</h2>
-        {categories.map((category) => (
-          <CategoryButton
-            key={category}
-            onClick={() => handleCategoryClick(category)}
-          >
-            {category}
-          </CategoryButton>
-        ))}
+        <div>
+          <StXButton style={{ fontSize: "20px" }} onClick={onClickModalClose}>
+            X
+          </StXButton>
+          <h2>Select a Category</h2>
+          {categories.map((category) => (
+            <CategoryButton
+              key={category}
+              onClick={() => handleCategoryClick(category)}
+            >
+              {category}
+            </CategoryButton>
+          ))}
+        </div>
       </ModalContainer>
     </ModalBackground>
   );

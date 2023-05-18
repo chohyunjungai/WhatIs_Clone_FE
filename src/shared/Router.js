@@ -25,15 +25,23 @@ const Router = () => {
     setShowModal(true);
   };
 
+  // const handleLogoClick = () => {
+  //   // Handle logo click action here
+  //   console.log("Logo clicked");
+  // };
+
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <GlobalLayoutHeader onCategoryClick={handleCategoryModalOpen} />
+        <GlobalLayoutHeader
+          onCategoryClick={handleCategoryModalOpen}
+          // onClickLogo={handleLogoClick}
+        />
         <Routes>
           <Route path="/main" element={<Main />} />
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="posts/:id/info" element={<ProjectInfo />} />
+          <Route path="/posts/:id/info" element={<ProjectInfo />} />
           <Route path="/posts/:id" element={<Detail />} />
           <Route path="/posts/:id/story" element={<ProjectStory />} />
           {/* Login Test를 위한 페이지 */}

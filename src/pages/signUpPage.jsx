@@ -1,13 +1,9 @@
-import "../pages/scss/SignUp.scss";
 import axios from "axios";
-// import kakoLogin from "../components/KaKaoLogin";
 import React, { useState } from "react";
+import "../pages/scss/SignUp.scss";
 import { useNavigate } from "react-router-dom";
-// import { KAKAO_AUTH_URL } from "../api/loginKeys";
 
 const SignUpPage = () => {
-  const [file, setFile] = useState();
-
   const [signUpForm, setSignUpForm] = useState({
     email: "",
     code: "",
@@ -16,19 +12,21 @@ const SignUpPage = () => {
     passwordCheck: "",
   });
 
-  const fileUpload = async () => {
-    // 서버 개발자가 s3의 signed url 을 받아오는 api를 제공한다
-    const res = await axios.post("~~~~");
-    // res.body.signedUrl
-    const fileUploadRes = await axios.put(res.body.signedUrl, file);
-  };
-
-  const submit = () => {
+  const submit = (signUpForm) => {
     // const someObj = { a: 1, b: 2 }
     // const newObj = { ...someObj, b: 3 }
 
-    console.log("signUpForm: ", signUpForm);
+    // console.log("signUpForm: ", signUpForm);
+    axios
+      .post("http://43.201.181.250//members/signup", signUpForm)
+      .then((response) => {
+        // console.log(response);
+      })
+      .catch((error) => {
+        // console.log(error);
+      });
   };
+  const recieveVerifyCode = () => {};
 
   const sendVerifyCode = () => {
     axios
@@ -42,7 +40,12 @@ const SignUpPage = () => {
         console.log("error: ", error);
       });
   };
-
+  console.log("input 밸류:", signUpForm);
+  console.log(signUpForm.name);
+  const [openModal, setOpenModal] = useState(false);
+  const showModal = () => {
+    setOpenModal(true);
+  };
   return (
     <section className="sign-up">
       <div className="form-wrapper">
@@ -58,32 +61,57 @@ const SignUpPage = () => {
                 setSignUpForm({ ...signUpForm, email: e.target.value })
               }
             />
-            <button onClick={sendVerifyCode}>인증하기</button>
+            <button onClick={showModal}>인증하기</button>
           </div>
         </div>
-
+        {openModal ? (
+          <div className="input-row">
+            <div className="input-label">이메일</div>
+            <div className="input-wrapper email">
+              <input
+                placeholder="인증번호 입력"
+                type="text"
+                onChange={(e) =>
+                  setSignUpForm({ ...signUpForm, email: e.target.value })
+                }
+              />
+              <button onClick={sendVerifyCode}>확인</button>
+            </div>
+          </div>
+        ) : null}
         <div className="input-row">
           <div className="input-label">이름</div>
           <div className="input-wrapper name">
-            <input placeholder="이름 입력" type="text" />
+            <input
+              placeholder="이름 입력"
+              type="text"
+              // value={name}
+              onChange={(e) =>
+                setSignUpForm({ ...signUpForm, name: e.target.value })
+              }
+            />
           </div>
         </div>
 
         <div className="input-row">
           <div className="input-label">비밀번호</div>
           <div className="input-wrapper password">
-            <input placeholder="비밀번호 입력" type="text" />
-            <input placeholder="비밀번호 확인" type="text" />
+            <input
+              placeholder="비밀번호 입력"
+              type="text"
+              onChange={(e) =>
+                setSignUpForm({ ...signUpForm, password: e.target.value })
+              }
+            />
+            <input
+              placeholder="비밀번호 확인"
+              type="text"
+              onChange={(e) =>
+                setSignUpForm({ ...signUpForm, passwordCheck: e.target.value })
+              }
+            />
           </div>
         </div>
-
-        <input
-          type="file"
-          onChange={(e) => {
-            console.log("e.target.files[0]: ", e.target.files[0]);
-            setFile(e.target.files[0]);
-          }}
-        />
 
         <div className="action-wrapper">
           <button onClick={submit}>완료</button>

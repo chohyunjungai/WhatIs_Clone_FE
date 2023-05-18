@@ -46,7 +46,7 @@ const Main = () => {
   const formData = location.state && location.state.formData;
 
   const [itemList, setItemList] = useState([]);
-  const [category, setCategory] = useState([]);
+  const [category, setCategory] = useState("All");
   console.log("카테고리 들어완요?", category);
   const [sort, setSort] = useState("createdAt");
 
@@ -71,9 +71,9 @@ const Main = () => {
     }
   };
 
-  // useEffect(() => {
-  //   getMainData();
-  // }, [category, sort]); // add empty array here
+  useEffect(() => {
+    getMainData();
+  }, [category, sort]); // add empty array here
 
   // const getCategoryListData = async () => {
   //   try {
