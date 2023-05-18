@@ -8,21 +8,37 @@ import Cookies from "js-cookie";
 import { useLocation } from "react-router-dom";
 const Detail = () => {
   const { id } = useParams();
-  const [detailFunding, setDetailFunding] = useState([]);
   const location = useLocation();
   const data = location.state;
-  // const getDetailData = async () => {
-  //   try {
-  //     const response = await axios.get(`/posts/${id}`);
-  //     console.log("상세 get 요청 결과:", response);
-  //     setDetailFunding(response.data.data);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-  // useEffect(() => {
-  //   getDetailData();
-  // }, []);
+
+  const jwtInstance = axios.create({
+    baseURL: process.env.REACT_APP_SERVER_URL,
+  });
+  jwtInstance.interceptors.request.use(function (config) {
+    const access_token = Cookies.get("access_token");
+    const refresh_token = Cookies.get("refresh_token");
+    config.headers["access_token"] = `Bearer ${access_token}`;
+    config.headers["refresh_token"] = `Bearer ${refresh_token}`;
+    return config;
+  });
+
+  const fundingPost = async () => {
+    try {
+      const response = await jwtInstance.post(`/posts/${id}`);
+      console.log("펀딩하기 post 요청 결과:", response);
+      window.location.reload(); // 페이지 새로고침
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleFundingClick = () => {
+    const confirmFunding = window.confirm("이 프로젝트에 펀딩하시겠습니까?");
+
+    if (confirmFunding) {
+      fundingPost();
+    }
+  };
 
   return (
     <div className="container">
@@ -40,16 +56,14 @@ const Detail = () => {
         <div className="summary">{data.summary}</div>
         <div>
           <div className="number">{data.percentage}% 달성</div>
-          <div>{data.totalAmount}원</div>
-          <div>{data.price} </div>
+          <div>모인 금액 : {data.totalAmount}원</div>
+          <div>펀딩 금액 : {data.price}원</div>
           <div>{data.likeStatus ? "채워진하트" : "빈하트"}</div>
-          달성 모집금액 데드라인
           <div>
-            <p>{data.percentage}% 달성</p>
-            <p>{data.targetAmount}원</p>
-            <p>{data.deadLine}일 전</p>
+            <p>목표 금액 : {data.targetAmount}원</p>
+            <p>{data.deadLine}일 마감</p>
           </div>
-          <p>{data.title}</p>
+          <button onClick={handleFundingClick}>펀딩하기</button>
         </div>
       </div>
     </div>

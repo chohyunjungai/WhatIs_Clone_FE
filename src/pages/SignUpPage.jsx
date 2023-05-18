@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 const SignUpPage = () => {
   const [signUpForm, setSignUpForm] = useState({
     email: "",
-    // code: "",
     username: "",
     password: "",
     passwordCheck: "",

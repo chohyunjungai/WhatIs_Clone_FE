@@ -56,19 +56,19 @@ const CategoryModal = ({ onClose }) => {
   ]; // Add more categories as needed
 
   // access 토큰
-  const access_Token = Cookies.get("access_Token");
-  const refresh_token = Cookies.get("refresh_token");
 
+  const access_token = Cookies.get("access_token");
+  const refresh_token = Cookies.get("refresh_token");
   const jwtInstance = axios.create({
     baseURL: process.env.REACT_APP_SERVER_URL,
     headers: {
-      access_Token: `Bearer ${access_Token}`,
+      access_token: `Bearer ${access_token}`,
       refresh_token: `Bearer ${refresh_token}`,
     },
   });
 
   const handleCategoryClick = async (category) => {
-    if (!access_Token) {
+    if (!access_token) {
       // Check if access token or refresh token is missing
       alert("토큰이 없습니다. 로그인이 필요합니다."); // Alert the user
       navigate("/logintest");

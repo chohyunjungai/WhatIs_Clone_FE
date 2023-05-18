@@ -12,12 +12,10 @@ const jwtInstance = axios.create({
 });
 
 jwtInstance.interceptors.request.use(function (config) {
-  const access_Token = Cookies.get("access_Token");
+  const access_token = Cookies.get("access_token");
   const refresh_token = Cookies.get("refresh_token");
-
-  config.headers["access_Token"] = `Bearer ${access_Token}`;
+  config.headers["access_token"] = `Bearer ${access_token}`;
   config.headers["refresh_token"] = `Bearer ${refresh_token}`;
-
   return config;
 });
 
